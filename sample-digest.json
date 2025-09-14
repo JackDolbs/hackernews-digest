@@ -1,0 +1,230 @@
+{
+  "id": "digest-1726327200000",
+  "generated_at": "2024-09-14T16:00:00.000Z",
+  "date": "Sat Sep 14 2024",
+  "overview": {
+    "overview": "Today's tech digest highlights major developments in AI infrastructure, mobile development, and cloud computing. The standout story focuses on OpenAI's latest infrastructure improvements, while mobile development continues to evolve with new React Native capabilities. These stories collectively demonstrate the rapid pace of innovation across core technology platforms.",
+    "story_count": 8,
+    "date": "Sat Sep 14 2024",
+    "generated_at": "2024-09-14T16:00:00.000Z"
+  },
+  "summaries": [
+    {
+      "summary": "OpenAI announces significant infrastructure improvements to reduce API latency by 40% and increase throughput for enterprise customers. The changes include new data centers and optimized model serving architecture.",
+      "why_it_matters": "This directly impacts thousands of AI applications and could accelerate enterprise AI adoption by making real-time AI interactions more feasible.",
+      "category": "AI & ML",
+      "original_story": {
+        "id": 41234567,
+        "title": "OpenAI reduces API latency by 40% with new infrastructure",
+        "url": "https://blog.openai.com/infrastructure-improvements-2024",
+        "score": 1247,
+        "descendants": 312,
+        "time": 1726326000,
+        "by": "openai_team"
+      },
+      "generated_at": "2024-09-14T16:00:00.000Z"
+    },
+    {
+      "summary": "React Native 0.75 introduces a new architecture called 'Fabric' that promises 60% better performance and improved memory management. The update also includes better TypeScript support and debugging tools.",
+      "why_it_matters": "This could significantly improve mobile app performance and developer experience, potentially making React Native more competitive with native development.",
+      "category": "Mobile",
+      "original_story": {
+        "id": 41234568,
+        "title": "React Native 0.75 released with new Fabric architecture",
+        "url": "https://reactnative.dev/blog/2024/09/14/release-075",
+        "score": 892,
+        "descendants": 156,
+        "time": 1726325400,
+        "by": "reactnative_team"
+      },
+      "generated_at": "2024-09-14T16:00:00.000Z"
+    },
+    {
+      "summary": "AWS launches a new serverless database service that automatically scales from zero to millions of requests per second. The service combines the simplicity of DynamoDB with the query flexibility of traditional SQL databases.",
+      "why_it_matters": "This could simplify database architecture for startups and enterprises, reducing operational overhead while maintaining performance at scale.",
+      "category": "Cloud & Infrastructure",
+      "original_story": {
+        "id": 41234569,
+        "title": "AWS announces Aurora Serverless v3 with instant scaling",
+        "url": "https://aws.amazon.com/blogs/database/aurora-serverless-v3",
+        "score": 743,
+        "descendants": 89,
+        "time": 1726324800,
+        "by": "aws_developer"
+      },
+      "generated_at": "2024-09-14T16:00:00.000Z"
+    },
+    {
+      "summary": "A security researcher discovers a critical vulnerability in popular JavaScript package managers that could allow malicious code execution during package installation. The issue affects npm, yarn, and pnpm.",
+      "why_it_matters": "This vulnerability could compromise millions of development environments and production systems, highlighting the need for better supply chain security in the JavaScript ecosystem.",
+      "category": "Security",
+      "original_story": {
+        "id": 41234570,
+        "title": "Critical vulnerability found in JavaScript package managers",
+        "url": "https://security-blog.example.com/js-package-vulnerability",
+        "score": 1156,
+        "descendants": 423,
+        "time": 1726324200,
+        "by": "security_researcher"
+      },
+      "generated_at": "2024-09-14T16:00:00.000Z"
+    },
+    {
+      "summary": "Google announces Gemini Pro 2.0 with improved reasoning capabilities and 50% lower costs compared to GPT-4. The model shows particular strength in coding and mathematical problem-solving tasks.",
+      "why_it_matters": "Increased competition in the AI model space could drive down costs and accelerate innovation, making advanced AI capabilities more accessible to smaller companies.",
+      "category": "AI & ML",
+      "original_story": {
+        "id": 41234571,
+        "title": "Google releases Gemini Pro 2.0 with 50% cost reduction",
+        "url": "https://blog.google.com/technology/ai/gemini-pro-2-announcement",
+        "score": 1389,
+        "descendants": 267,
+        "time": 1726323600,
+        "by": "google_ai"
+      },
+      "generated_at": "2024-09-14T16:00:00.000Z"
+    },
+    {
+      "summary": "Apple releases iOS 18.1 with enhanced privacy features including on-device AI processing for Siri and improved app permission controls. The update also introduces new developer APIs for privacy-preserving analytics.",
+      "why_it_matters": "This continues Apple's privacy-first approach and could influence industry standards for AI processing and user data protection.",
+      "category": "Mobile",
+      "original_story": {
+        "id": 41234572,
+        "title": "iOS 18.1 brings on-device AI and enhanced privacy controls",
+        "url": "https://developer.apple.com/news/releases/ios-18-1",
+        "score": 967,
+        "descendants": 198,
+        "time": 1726323000,
+        "by": "apple_dev"
+      },
+      "generated_at": "2024-09-14T16:00:00.000Z"
+    },
+    {
+      "summary": "A new startup raises $50M Series A to build quantum-resistant encryption tools for enterprise applications. The company claims their solution is 10x faster than current post-quantum cryptography methods.",
+      "why_it_matters": "As quantum computing advances, organizations need to prepare for quantum threats to current encryption, making this a critical infrastructure investment.",
+      "category": "Startups & Business",
+      "original_story": {
+        "id": 41234573,
+        "title": "Quantum-resistant encryption startup raises $50M Series A",
+        "url": "https://techcrunch.com/quantum-encryption-startup-funding",
+        "score": 634,
+        "descendants": 112,
+        "time": 1726322400,
+        "by": "crypto_founder"
+      },
+      "generated_at": "2024-09-14T16:00:00.000Z"
+    },
+    {
+      "summary": "Microsoft announces Visual Studio Code will integrate GitHub Copilot Chat directly into the editor, allowing developers to get AI assistance without leaving their coding environment. The feature includes context-aware suggestions based on the current project.",
+      "why_it_matters": "This integration could significantly boost developer productivity by providing seamless AI assistance, potentially changing how developers write and debug code.",
+      "category": "Web Development",
+      "original_story": {
+        "id": 41234574,
+        "title": "VS Code integrates GitHub Copilot Chat for seamless AI coding",
+        "url": "https://code.visualstudio.com/blogs/2024/09/14/copilot-chat-integration",
+        "score": 1523,
+        "descendants": 345,
+        "time": 1726321800,
+        "by": "vscode_team"
+      },
+      "generated_at": "2024-09-14T16:00:00.000Z"
+    }
+  ],
+  "categories": {
+    "AI & ML": [
+      {
+        "id": 41234567,
+        "title": "OpenAI reduces API latency by 40% with new infrastructure",
+        "url": "https://blog.openai.com/infrastructure-improvements-2024",
+        "score": 1247,
+        "descendants": 312,
+        "time": 1726326000,
+        "by": "openai_team"
+      },
+      {
+        "id": 41234571,
+        "title": "Google releases Gemini Pro 2.0 with 50% cost reduction",
+        "url": "https://blog.google.com/technology/ai/gemini-pro-2-announcement",
+        "score": 1389,
+        "descendants": 267,
+        "time": 1726323600,
+        "by": "google_ai"
+      }
+    ],
+    "Mobile": [
+      {
+        "id": 41234568,
+        "title": "React Native 0.75 released with new Fabric architecture",
+        "url": "https://reactnative.dev/blog/2024/09/14/release-075",
+        "score": 892,
+        "descendants": 156,
+        "time": 1726325400,
+        "by": "reactnative_team"
+      },
+      {
+        "id": 41234572,
+        "title": "iOS 18.1 brings on-device AI and enhanced privacy controls",
+        "url": "https://developer.apple.com/news/releases/ios-18-1",
+        "score": 967,
+        "descendants": 198,
+        "time": 1726323000,
+        "by": "apple_dev"
+      }
+    ],
+    "Cloud & Infrastructure": [
+      {
+        "id": 41234569,
+        "title": "AWS announces Aurora Serverless v3 with instant scaling",
+        "url": "https://aws.amazon.com/blogs/database/aurora-serverless-v3",
+        "score": 743,
+        "descendants": 89,
+        "time": 1726324800,
+        "by": "aws_developer"
+      }
+    ],
+    "Security": [
+      {
+        "id": 41234570,
+        "title": "Critical vulnerability found in JavaScript package managers",
+        "url": "https://security-blog.example.com/js-package-vulnerability",
+        "score": 1156,
+        "descendants": 423,
+        "time": 1726324200,
+        "by": "security_researcher"
+      }
+    ],
+    "Startups & Business": [
+      {
+        "id": 41234573,
+        "title": "Quantum-resistant encryption startup raises $50M Series A",
+        "url": "https://techcrunch.com/quantum-encryption-startup-funding",
+        "score": 634,
+        "descendants": 112,
+        "time": 1726322400,
+        "by": "crypto_founder"
+      }
+    ],
+    "Web Development": [
+      {
+        "id": 41234574,
+        "title": "VS Code integrates GitHub Copilot Chat for seamless AI coding",
+        "url": "https://code.visualstudio.com/blogs/2024/09/14/copilot-chat-integration",
+        "score": 1523,
+        "descendants": 345,
+        "time": 1726321800,
+        "by": "vscode_team"
+      }
+    ]
+  },
+  "stats": {
+    "total_stories_fetched": 50,
+    "tech_stories_found": 23,
+    "stories_summarized": 8,
+    "categories_found": 6
+  },
+  "config": {
+    "storyLimit": 8,
+    "hoursBack": 24,
+    "openaiApiKey": "[REDACTED]"
+  }
+}

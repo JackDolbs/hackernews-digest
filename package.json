@@ -11,7 +11,9 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"format": "prettier --write .",
-		"lint": "prettier --check . && eslint ."
+		"lint": "prettier --check . && eslint .",
+		"digest": "node src/lib/digest-agent.js",
+		"cron": "node src/lib/cron-job.js"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.2.5",
@@ -38,5 +40,11 @@
 		"typescript": "^5.0.0",
 		"typescript-eslint": "^8.20.0",
 		"vite": "^7.0.4"
+	},
+	"dependencies": {
+		"dotenv": "^17.2.2",
+		"node-cron": "^4.2.1",
+		"openai": "^5.20.2",
+		"pocketbase": "^0.26.2"
 	}
 }
