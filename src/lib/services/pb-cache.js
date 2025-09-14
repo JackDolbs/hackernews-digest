@@ -7,12 +7,19 @@ class PocketBaseCache {
             throw new Error('Missing VITE_POCKETBASE_URL environment variable');
         }
         
-        console.log('🔍 PocketBase URL:', pbUrl);
-        console.log('🔍 Collection name:', 'digests_cache');
+        console.log('🔍 PocketBase cache initialized');
+        console.log('🔍 Collection:', 'digests_cache');
         
         this.pb = new PocketBase(pbUrl);
         this.defaultTTL = 45 * 60 * 1000; // 45 minutes in milliseconds
         this.collection = 'digests_cache';
+        
+        // Note: This cache uses public PocketBase API rules
+        // No authentication required - configure your PocketBase rules as:
+        // List/View: @request.auth.id = "" (allow anonymous)
+        // Create: @request.auth.id = "" (allow anonymous)
+        // Update: false (no updates needed)
+        // Delete: false (cleanup handled server-side)
     }
 
     generateKey(params) {
@@ -44,7 +51,7 @@ class PocketBaseCache {
             // First, let's see what records exist
             console.log('🔍 Testing PocketBase connection...');
             console.log('Collection:', this.collection);
-            console.log('PocketBase URL:', this.pb.baseUrl);
+            console.log('PocketBase: Connected');
             
             const allRecords = await this.pb.collection(this.collection).getFullList();
             console.log('🔍 Current records in collection:', allRecords.length);
@@ -55,9 +62,9 @@ class PocketBaseCache {
                 try {
                     const directCall = await fetch(`${this.pb.baseUrl}/api/collections/${this.collection}/records`);
                     const directResult = await directCall.json();
-                    console.log('🌐 Direct API call result:', directResult);
+                    console.log('🌐 Direct API call successful, found', directResult?.items?.length || 0, 'records');
                 } catch (directError) {
-                    console.error('Direct API call failed:', directError);
+                    console.error('Direct API call failed:', directError.message);
                 }
             }
             
@@ -167,13 +174,13 @@ class PocketBaseCache {
 
             let record;
             try {
-                console.log('🌐 Making request to:', `${this.pb.baseUrl}/api/collections/${this.collection}/records`);
+                console.log('🌐 Creating cache entry in PocketBase...');
                 console.log('📤 Sending data:', { key, digest: 'DIGEST_DATA_HIDDEN', params: safeParams });
                 
                 // Create new cache entry
                 record = await this.pb.collection(this.collection).create(data);
                 console.log('✅ Cache entry created:', record);
-                console.log('🔗 Direct PocketBase link:', `${this.pb.baseUrl}/_/#/collections?collection=${this.pb.collection(this.collection).collectionIdOrName}`);
+                console.log('✅ Cache entry verified in PocketBase');
                 
                 // Verify the record exists
                 const verifyRecord = await this.pb.collection(this.collection).getOne(record.id);
