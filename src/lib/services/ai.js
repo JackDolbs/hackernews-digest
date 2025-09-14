@@ -52,7 +52,9 @@ Format your response as JSON:
 {
   "summary": "Your 2-3 sentence summary here",
   "why_it_matters": "One sentence on why this is significant",
-  "category": "One of: AI & ML, Web Development, Mobile, Cloud & Infrastructure, Startups & Business, Security, Hardware, General Tech"
+  "category": "One of: AI & ML, Web Development, Mobile, Cloud & Infrastructure, Startups & Business, Security, Hardware, General Tech",
+  "sentiment": "One of: positive, neutral, negative",
+  "sentiment_reason": "One brief sentence explaining the sentiment"
 }`;
 
 		const completion = await openai.chat.completions.create({
@@ -88,6 +90,8 @@ Format your response as JSON:
 				summary: `${story.title} - A trending story on HackerNews with ${story.score} points and ${story.descendants} comments.`,
 				why_it_matters: "This story is gaining attention in the tech community.",
 				category: "General Tech",
+				sentiment: "neutral",
+				sentiment_reason: "Unable to analyze sentiment due to parsing error.",
 				original_story: story,
 				generated_at: new Date().toISOString()
 			};
@@ -101,6 +105,8 @@ Format your response as JSON:
 			summary: `${story.title} - A trending story on HackerNews with ${story.score} points and ${story.descendants} comments.`,
 			why_it_matters: "This story is gaining attention in the tech community.",
 			category: "General Tech",
+			sentiment: "neutral",
+			sentiment_reason: "Unable to analyze sentiment due to API error.",
 			original_story: story,
 			generated_at: new Date().toISOString(),
 			error: error.message

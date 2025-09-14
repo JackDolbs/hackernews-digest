@@ -1,34 +1,44 @@
 <!-- @ts-nocheck -->
-<script>
-	export let summary;
-	export let index;
+<script lang="ts">
+	import SentimentBadge from './SentimentBadge.svelte';
+	interface Story {
+		title: string;
+		url: string;
+		score: number;
+		descendants: number;
+		time: number;
+		by: string;
+		id: string;
+	}
+
+	interface Summary {
+		category: string;
+		summary: string;
+		why_it_matters: string;
+		sentiment?: 'positive' | 'neutral' | 'negative';
+		sentiment_reason?: string;
+		original_story: Story;
+	}
+
+	export let summary: Summary;
+	export let index: number;
 	
-	// Category color mapping - blue/indigo theme
-	const categoryColors = {
-		'AI & ML': 'bg-indigo-100 text-indigo-800 border-indigo-200',
-		'Web Development': 'bg-blue-100 text-blue-800 border-blue-200',
-		'Mobile': 'bg-cyan-100 text-cyan-800 border-cyan-200',
-		'Cloud & Infrastructure': 'bg-sky-100 text-sky-800 border-sky-200',
-		'Startups & Business': 'bg-blue-100 text-blue-800 border-blue-200',
-		'Security': 'bg-indigo-100 text-indigo-800 border-indigo-200',
-		'Hardware': 'bg-slate-100 text-slate-800 border-slate-200',
-		'General Tech': 'bg-gray-100 text-gray-800 border-gray-200'
-	};
+	// All categories use neutral gray theme
+	const categoryStyle = 'bg-slate-100 text-slate-800 border-slate-200';
 	
-	$: categoryStyle = categoryColors[summary.category] || categoryColors['General Tech'];
 	$: story = summary.original_story;
 	
-	function formatScore(score) {
+	function formatScore(score: number): string {
 		if (score >= 1000) {
 			return `${(score / 1000).toFixed(1)}k`;
 		}
 		return score.toString();
 	}
 	
-	function formatTime(timestamp) {
+	function formatTime(timestamp: number): string {
 		const date = new Date(timestamp * 1000);
 		const now = new Date();
-		const diffHours = Math.floor((now - date) / (1000 * 60 * 60));
+		const diffHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
 		
 		if (diffHours < 1) return 'Just now';
 		if (diffHours === 1) return '1 hour ago';
@@ -43,13 +53,18 @@
 <article class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow">
 	<!-- Header -->
 	<div class="p-6 pb-4">
-		<div class="flex items-start justify-between mb-3">
+		<div class="flex items-center mb-3">
 			<span class="text-2xl font-bold text-slate-400">
 				{String(index + 1).padStart(2, '0')}
 			</span>
-			<span class="px-3 py-1 text-xs font-medium rounded-full border {categoryStyle}">
-				{summary.category}
-			</span>
+			{#if summary.sentiment}
+				<div class="ml-auto flex items-center gap-2">
+					<SentimentBadge sentiment={summary.sentiment} />
+					<span class="px-3 py-1 text-xs font-medium rounded-full border {categoryStyle}">
+						{summary.category}
+					</span>
+				</div>
+			{/if}
 		</div>
 		
 		<h3 class="text-lg font-semibold text-slate-900 leading-tight mb-3">
