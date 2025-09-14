@@ -12,15 +12,4 @@
 	<p class="text-slate-700 text-md leading-relaxed mb-4">
 		{digest.overview.overview}
 	</p>
-	
-	<div class="flex flex-wrap gap-4 text-sm text-slate-600">
-		<div class="flex items-center space-x-2">
-			<span class="w-2 h-2 bg-blue-500 rounded-full"></span>
-			<span>{digest.stats.stories_summarized} stories</span>
-		</div>
-		<div class="flex items-center space-x-2">
-			<span class="w-2 h-2 bg-indigo-500 rounded-full"></span>
-			<span>{digest.stats.categories_found} categories</span>
-		</div>
-	</div>
 </div>
