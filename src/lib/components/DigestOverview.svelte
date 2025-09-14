@@ -22,9 +22,5 @@
 			<span class="w-2 h-2 bg-indigo-500 rounded-full"></span>
 			<span>{digest.stats.categories_found} categories</span>
 		</div>
-		<div class="flex items-center space-x-2">
-			<span class="w-2 h-2 bg-cyan-500 rounded-full"></span>
-			<span>AI-powered summaries</span>
-		</div>
 	</div>
 </div>
