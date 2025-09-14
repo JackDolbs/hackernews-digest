@@ -1,10 +1,10 @@
 import { json } from '@sveltejs/kit';
-import digestCache from '$lib/services/cache.js';
+import pbCache from '$lib/services/pb-cache.js';
 
 /** @type {import('./$types').RequestHandler} */
 export async function POST() {
 	try {
-		digestCache.clear();
+		await pbCache.clear();
 		return json({ message: 'Cache cleared successfully' });
 	} catch (error) {
 		console.error('Error clearing cache:', error);

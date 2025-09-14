@@ -1,14 +1,10 @@
-/**
- * Cache management API endpoints
- */
-
 import { json } from '@sveltejs/kit';
-import digestCache from '$lib/services/cache.js';
+import pbCache from '$lib/services/pb-cache.js';
 
 /** @type {import('./$types').RequestHandler} */
 export async function GET() {
 	try {
-		const stats = digestCache.getStats();
+		const stats = await pbCache.getStats();
 		
 		return json({
 			status: 'success',
@@ -27,7 +23,7 @@ export async function GET() {
 /** @type {import('./$types').RequestHandler} */
 export async function DELETE() {
 	try {
-		digestCache.clear();
+		await pbCache.clear();
 		
 		return json({
 			status: 'success',

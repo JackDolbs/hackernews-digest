@@ -7,7 +7,7 @@ import dotenv from 'dotenv';
 import { getTrendingStories } from './services/hackernews.js';
 import { filterTechStories, categorizeTechStories } from './services/filter.js';
 import { initializeOpenAI, summarizeStories, generateDigestOverview } from './services/ai.js';
-import digestCache from './services/cache.js';
+import pbCache from './services/pb-cache.js';
 
 // Load environment variables
 dotenv.config();
@@ -30,7 +30,7 @@ export async function generateDigest(config = {}) {
 	const finalConfig = { ...DEFAULT_CONFIG, ...config };
 	
 	// Check cache first
-	const cachedDigest = digestCache.get(finalConfig);
+	const cachedDigest = await pbCache.get(finalConfig);
 	if (cachedDigest) {
 		return cachedDigest;
 	}
@@ -93,7 +93,7 @@ export async function generateDigest(config = {}) {
 		console.log(`   📊 Stats: ${digest.stats.stories_summarized} stories across ${digest.stats.categories_found} categories`);
 		
 		// Cache the digest for future requests
-		digestCache.set(finalConfig, digest);
+		await pbCache.set(finalConfig, digest);
 		
 		return digest;
 		
