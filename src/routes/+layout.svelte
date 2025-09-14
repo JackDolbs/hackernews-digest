@@ -1,4 +1,5 @@
-<script lang="ts">
+<!-- @ts-nocheck -->
+<script>
 	import '../app.css';
 	import favicon from '$lib/assets/favicon.svg';
 
@@ -13,4 +14,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </svelte:head>
 
-{@render children?.()}
+<div class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+	{@render children?.()}
+</div>

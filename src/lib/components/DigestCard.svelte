@@ -3,16 +3,16 @@
 	export let summary;
 	export let index;
 	
-	// Category color mapping
+	// Category color mapping - blue/indigo theme
 	const categoryColors = {
-		'AI & ML': 'bg-purple-100 text-purple-800 border-purple-200',
+		'AI & ML': 'bg-indigo-100 text-indigo-800 border-indigo-200',
 		'Web Development': 'bg-blue-100 text-blue-800 border-blue-200',
-		'Mobile': 'bg-green-100 text-green-800 border-green-200',
-		'Cloud & Infrastructure': 'bg-indigo-100 text-indigo-800 border-indigo-200',
-		'Startups & Business': 'bg-orange-100 text-orange-800 border-orange-200',
-		'Security': 'bg-red-100 text-red-800 border-red-200',
-		'Hardware': 'bg-gray-100 text-gray-800 border-gray-200',
-		'General Tech': 'bg-slate-100 text-slate-800 border-slate-200'
+		'Mobile': 'bg-cyan-100 text-cyan-800 border-cyan-200',
+		'Cloud & Infrastructure': 'bg-sky-100 text-sky-800 border-sky-200',
+		'Startups & Business': 'bg-blue-100 text-blue-800 border-blue-200',
+		'Security': 'bg-indigo-100 text-indigo-800 border-indigo-200',
+		'Hardware': 'bg-slate-100 text-slate-800 border-slate-200',
+		'General Tech': 'bg-gray-100 text-gray-800 border-gray-200'
 	};
 	
 	$: categoryStyle = categoryColors[summary.category] || categoryColors['General Tech'];
@@ -57,7 +57,7 @@
 				href={story.url} 
 				target="_blank" 
 				rel="noopener noreferrer"
-				class="hover:text-orange-600 transition-colors"
+				class="hover:text-blue-600 transition-colors"
 			>
 				{story.title}
 			</a>
@@ -66,7 +66,7 @@
 		<!-- Story Metadata -->
 		<div class="flex items-center space-x-4 text-sm text-slate-500 mb-4">
 			<div class="flex items-center space-x-1">
-				<span class="w-4 h-4 text-orange-500">▲</span>
+				<span class="w-4 h-4 text-blue-500">▲</span>
 				<span>{formatScore(story.score)}</span>
 			</div>
 			<div class="flex items-center space-x-1">
@@ -86,19 +86,19 @@
 	
 	<!-- AI Summary -->
 	<div class="px-6 pb-6">
-		<div class="bg-gradient-to-r from-orange-50 to-amber-50 rounded-lg p-4 border border-orange-100">
+		<div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-100">
 			<div class="flex items-center space-x-2 mb-2">
-				<span class="w-5 h-5 text-orange-500">🤖</span>
-				<span class="text-sm font-medium text-orange-800">AI Summary</span>
+				<span class="w-5 h-5 text-blue-500">🤖</span>
+				<span class="text-sm font-medium text-blue-800">AI Summary</span>
 			</div>
 			
-			<p class="text-slate-700 leading-relaxed mb-3">
+			<p class="text-slate-700 leading-relaxed mb-3 text-sm">
 				{summary.summary}
 			</p>
 			
-			<div class="bg-white/50 rounded-md p-3 border border-orange-200">
+			<div class="bg-white/50 rounded-md p-3 border border-blue-200">
 				<p class="text-sm text-slate-600">
-					<span class="font-medium text-orange-700">Why it matters:</span>
+					<span class="font-medium text-blue-700">Why it matters:</span>
 					{summary.why_it_matters}
 				</p>
 			</div>
@@ -109,16 +109,6 @@
 	<div class="px-6 py-4 bg-slate-50 border-t border-slate-100">
 		<div class="flex items-center justify-between">
 			<a 
-				href={story.url}
-				target="_blank"
-				rel="noopener noreferrer"
-				class="inline-flex items-center space-x-2 text-sm font-medium text-orange-600 hover:text-orange-700 transition-colors"
-			>
-				<span>Read Original</span>
-				<span class="w-4 h-4">↗</span>
-			</a>
-			
-			<a 
 				href="https://news.ycombinator.com/item?id={story.id}"
 				target="_blank"
 				rel="noopener noreferrer"
@@ -126,6 +116,16 @@
 			>
 				<span>HN Discussion</span>
 				<span class="w-4 h-4">💬</span>
+			</a>
+			
+			<a 
+				href={story.url}
+				target="_blank"
+				rel="noopener noreferrer"
+				class="inline-flex items-center space-x-2 text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
+			>
+				<span>Source</span>
+				<span class="w-4 h-4">↗</span>
 			</a>
 		</div>
 	</div>

@@ -3,7 +3,7 @@
 		<!-- Outer ring -->
 		<div class="w-12 h-12 border-4 border-slate-200 rounded-full"></div>
 		<!-- Spinning inner ring -->
-		<div class="absolute top-0 left-0 w-12 h-12 border-4 border-transparent border-t-orange-500 rounded-full animate-spin"></div>
+		<div class="absolute top-0 left-0 w-12 h-12 border-4 border-transparent border-t-blue-600 rounded-full animate-spin"></div>
 	</div>
 </div>
 
