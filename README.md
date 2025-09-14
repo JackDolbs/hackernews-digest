@@ -32,13 +32,11 @@ npm install
 Create a `.env` file in the root directory:
 
 ```bash
-# Required
-OPENAI_API_KEY=your_openai_api_key_here
+# Required: OpenAI API key (server-side only, secure)
+OPENAI_API_KEY=sk-proj-your-openai-api-key-here
 
-# Optional - for PocketBase caching (recommended for production)
+# Optional: PocketBase caching (recommended for production)
 VITE_POCKETBASE_URL=https://your-pocketbase-instance.com
-VITE_POCKETBASE_ADMIN_EMAIL=admin@example.com
-VITE_POCKETBASE_ADMIN_PASSWORD=your_admin_password
 ```
 
 **Required:**
@@ -47,7 +45,15 @@ VITE_POCKETBASE_ADMIN_PASSWORD=your_admin_password
 **Optional (for persistent caching):**
 - Set up a PocketBase instance (local or hosted)
 - Create a `digests_cache` collection with fields: `key` (text), `digest` (json), `params` (json)
-- Set API rules to allow public access or configure admin credentials
+- **Security**: Configure PocketBase API rules for public access:
+  ```
+  List/View: @request.auth.id = ""  (allow anonymous read)
+  Create: @request.auth.id = ""     (allow anonymous create)
+  Update: false                     (no updates needed)
+  Delete: false                     (cleanup handled server-side)
+  ```
+
+**⚠️ Security Note:** Admin credentials are no longer required in `.env` file. The system uses public PocketBase API rules for secure, anonymous caching.
 
 ### 3. Run the Application
 
@@ -140,7 +146,8 @@ POST /api/cache/clear   # Clear digest cache
 - **PocketBase Cache** (`src/lib/services/pb-cache.js`)
   - **NEW**: Persistent caching with 45-minute TTL
   - Automatic cleanup of expired entries
-  - Fallback to in-memory when PocketBase unavailable
+  - **Security**: No admin credentials required, uses public API rules
+  - Sanitized logging with no sensitive data exposure
 
 - **Digest Agent** (`src/lib/digest-agent.js`)
   - Orchestrates the entire pipeline
@@ -230,10 +237,40 @@ The system demonstrates:
 - **Efficient Rendering**: Component-based architecture with minimal re-renders
 - **Mobile-optimized UI**: Responsive design with touch-friendly interactions
 
+### Security
+
+This application follows security best practices:
+
+- **🔒 API Key Protection**: OpenAI API key is server-side only (`process.env`), never exposed to client
+- **🛡️ Sanitized Logging**: All sensitive URLs and credentials removed from console logs
+- **🔐 No Admin Credentials**: PocketBase uses public API rules, no admin authentication required
+- **📋 Environment Variables**: Only safe variables exposed to client-side (VITE_ prefix)
+- **📚 Security Documentation**: Comprehensive `SECURITY.md` with guidelines and best practices
+
+For detailed security information, see [`SECURITY.md`](./SECURITY.md).
+
 ### Recent Updates (v2.0)
 
-- ✅ **PocketBase Integration**: Persistent caching system
-- ✅ **Sentiment Analysis**: AI-powered emotional tone detection
-- ✅ **Flexible Sorting**: Multiple story ordering options
-- ✅ **Enhanced UI**: Skeleton loaders and improved mobile experience
-- ✅ **Cache Management**: Manual cache control and statistics
+- ✅ **PocketBase Integration**: Persistent caching system with 45-minute TTL
+- ✅ **Sentiment Analysis**: AI-powered emotional tone detection with color-coded badges
+- ✅ **Flexible Sorting**: Multiple story ordering options (trending, upvotes, comments, latest)
+- ✅ **Enhanced UI**: Skeleton loaders, improved mobile experience, and causaLens branding
+- ✅ **Cache Management**: Manual cache control and performance statistics
+- ✅ **Security Hardening**: Removed admin credential requirements, sanitized logging, secure environment variable handling
+- ✅ **Performance Optimizations**: Concurrent API processing, efficient caching, and faster load times
+
+## Future Enhancements
+
+This project has several potential areas for expansion:
+
+### 📧 **Email Digest System**
+- **Scheduled Email Delivery**: Automated daily/weekly digest emails
+- **Subscriber Management**: User preferences and subscription handling
+- **Email Templates**: Beautiful HTML email templates with mobile optimization
+- **Personalization**: Customized digests based on user interests and reading history
+
+### 🚨 **Breaking News Detection**
+- **Trending Algorithm**: Detect stories with rapid engagement growth
+- **Breaking News Section**: Featured section for high-impact stories
+- **Real-time Notifications**: Push notifications for critical tech developments
+- **Urgency Scoring**: AI-powered assessment of story importance and time sensitivity
