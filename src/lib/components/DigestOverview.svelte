@@ -9,7 +9,7 @@
 		<span class="text-sm text-slate-500">{digest.date}</span>
 	</div>
 	
-	<p class="text-slate-700 text-md leading-relaxed mb-4">
+	<p class="text-slate-700 text-sm leading-relaxed mb-4">
 		{digest.overview.overview}
 	</p>
 </div>
