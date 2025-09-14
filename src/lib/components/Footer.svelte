@@ -15,7 +15,7 @@
 		</p>
 		
 		<p class="text-slate-600 text-sm">
-			Analyzed {digest.stats.total_stories_fetched} trending stories across {digest.stats.categories_found} categories
+			Analyzed {digest.stats.total_stories_fetched} trending stories
 		</p>
 		
 		<p class="text-slate-500 text-xs">
