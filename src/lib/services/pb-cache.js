@@ -18,8 +18,21 @@ class PocketBaseCache {
     generateKey(params) {
         const storyLimit = params?.storyLimit || 12;
         const hoursBack = params?.hoursBack || 24;
-        const timeWindow = Math.floor(Date.now() / (this.defaultTTL));
-        return `digest_${storyLimit}_${hoursBack}_${timeWindow}`;
+        // Create a stable key that doesn't change every request
+        // Use a time window that changes every 45 minutes (TTL)
+        const now = Date.now();
+        const timeWindow = Math.floor(now / this.defaultTTL);
+        const key = `digest_${storyLimit}_${hoursBack}_${timeWindow}`;
+        
+        console.log('🔑 Key generation:', {
+            now: new Date(now).toISOString(),
+            ttl_minutes: this.defaultTTL / 60000,
+            timeWindow,
+            key,
+            params: { storyLimit, hoursBack }
+        });
+        
+        return key;
     }
 
     async get(params) {
@@ -29,47 +42,98 @@ class PocketBaseCache {
             console.log('Looking for cached digest...', { key, collection: this.collection });
             
             // First, let's see what records exist
+            console.log('🔍 Testing PocketBase connection...');
+            console.log('Collection:', this.collection);
+            console.log('PocketBase URL:', this.pb.baseUrl);
+            
             const allRecords = await this.pb.collection(this.collection).getFullList();
             console.log('🔍 Current records in collection:', allRecords.length);
+            
+            if (allRecords.length === 0) {
+                console.log('❌ No records found - this might be why cache lookup fails');
+                // Try a direct API call to debug
+                try {
+                    const directCall = await fetch(`${this.pb.baseUrl}/api/collections/${this.collection}/records`);
+                    const directResult = await directCall.json();
+                    console.log('🌐 Direct API call result:', directResult);
+                } catch (directError) {
+                    console.error('Direct API call failed:', directError);
+                }
+            }
+            
             allRecords.forEach((rec, index) => {
-                console.log(`  Record ${index + 1}:`, { id: rec.id, key: rec.key, created: rec.created });
+                const age = Date.now() - new Date(rec.created).getTime();
+                const ageMinutes = Math.round(age / 60000);
+                console.log(`  Record ${index + 1}:`, { 
+                    id: rec.id, 
+                    key: rec.key, 
+                    created: rec.created,
+                    ageMinutes: ageMinutes,
+                    expired: age > this.defaultTTL
+                });
             });
             
             try {
-                // Try to find a cache entry with this key that hasn't expired
-                const result = await this.pb.collection(this.collection).getFirstListItem(
-                    `key = "${key}" && created >= "${new Date(Date.now() - this.defaultTTL).toISOString()}"`,
+                // First, try to find any record with this key
+                console.log('🔍 Searching for record with key:', key);
+                const keyOnlyResult = await this.pb.collection(this.collection).getFirstListItem(
+                    `key = "${key}"`,
                     { sort: '-created' }
                 );
-
-                if (!result) {
-                    console.log('No valid cache entry found');
-                    return null;
-                }
-
-                const now = Date.now();
-                const timestamp = new Date(result.created).getTime();
-                const ageMinutes = Math.round((now - timestamp) / 60000);
-
-                console.log(`📦 Cache hit! Found digest:`, result);
-                console.log(`Cache age: ${ageMinutes} minutes`);
-
-                return {
-                    ...JSON.parse(result.digest),
-                    cache_info: {
-                        cached: true,
-                        generated_at: result.created,
-                        served_from_cache_at: new Date().toISOString(),
-                        cache_age_minutes: ageMinutes
+                console.log('✅ Found record:', keyOnlyResult?.id || 'none');
+                
+                if (keyOnlyResult) {
+                    const age = Date.now() - new Date(keyOnlyResult.created).getTime();
+                    const isExpired = age > this.defaultTTL;
+                    
+                    console.log('🔍 Found record with key:', {
+                        id: keyOnlyResult.id,
+                        created: keyOnlyResult.created,
+                        ageMinutes: Math.round(age / 60000),
+                        isExpired,
+                        ttlMinutes: this.defaultTTL / 60000
+                    });
+                    
+                        if (!isExpired) {
+                            console.log(`📦 Cache hit! Found digest:`, keyOnlyResult);
+                            
+                            // The digest field might already be an object if PocketBase auto-parses it
+                            let digestData;
+                            if (typeof keyOnlyResult.digest === 'string') {
+                                digestData = JSON.parse(keyOnlyResult.digest);
+                            } else {
+                                digestData = keyOnlyResult.digest;
+                            }
+                            
+                            return {
+                                ...digestData,
+                                cache_info: {
+                                    cached: true,
+                                    generated_at: keyOnlyResult.created,
+                                    served_from_cache_at: new Date().toISOString(),
+                                    cache_age_minutes: Math.round(age / 60000)
+                                }
+                            };
+                        } else {
+                        console.log('Record found but expired, will generate new digest');
                     }
-                };
+                } else {
+                    console.log('No record found with this key');
+                }
+                
+                return null;
             } catch (error) {
                 if (error.status === 404) {
-                    console.log('No cache entry found');
+                    console.log('No cache entry found (404 error)');
                     return null;
                 }
                 console.error('Failed to fetch cache entry:', error.response || error);
-                throw error;
+                console.error('Error details:', {
+                    status: error.status,
+                    message: error.message,
+                    url: error.url
+                });
+                return null;
             }
 
         } catch (error) {
@@ -101,12 +165,13 @@ class PocketBaseCache {
 
             console.log('Creating new cache entry...', { key, collection: this.collection });
 
+            let record;
             try {
                 console.log('🌐 Making request to:', `${this.pb.baseUrl}/api/collections/${this.collection}/records`);
                 console.log('📤 Sending data:', { key, digest: 'DIGEST_DATA_HIDDEN', params: safeParams });
                 
                 // Create new cache entry
-                const record = await this.pb.collection(this.collection).create(data);
+                record = await this.pb.collection(this.collection).create(data);
                 console.log('✅ Cache entry created:', record);
                 console.log('🔗 Direct PocketBase link:', `${this.pb.baseUrl}/_/#/collections?collection=${this.pb.collection(this.collection).collectionIdOrName}`);
                 
@@ -136,13 +201,14 @@ class PocketBaseCache {
                 // Clean up old entries for this key (but NOT the one we just created)
                 const cutoffTime = new Date(Date.now() - this.defaultTTL).toISOString();
                 console.log(`Looking for old entries created before: ${cutoffTime}`);
+                console.log(`Current record ID: ${record.id} (will be excluded from cleanup)`);
                 
                 const oldEntries = await this.pb.collection(this.collection).getFullList({
-                    filter: `key = "${key}" && created < "${cutoffTime}"`,
+                    filter: `key = "${key}" && created < "${cutoffTime}" && id != "${record.id}"`,
                     sort: '-created'
                 });
 
-                console.log(`Found ${oldEntries.length} old entries to clean up (excluding current record ${record.id})`);
+                console.log(`Found ${oldEntries.length} old entries to clean up (excluding current record)`);
 
                 // Delete old entries in parallel
                 if (oldEntries.length > 0) {
@@ -152,6 +218,8 @@ class PocketBaseCache {
                         )
                     );
                     console.log(`🧹 Cleaned up ${oldEntries.length} old entries`);
+                } else {
+                    console.log('No old entries to clean up');
                 }
             } catch (error) {
                 console.error('Failed to clean up old entries:', error.response || error);

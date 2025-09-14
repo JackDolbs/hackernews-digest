@@ -4,7 +4,6 @@
     import { cn } from "$lib/utils";
 
     export let sentiment: 'positive' | 'neutral' | 'negative' = "neutral";
-    export let reason = "";
 
     const variants: Record<typeof sentiment, string> = {
         positive: "bg-green-600 text-white hover:bg-green-700",
