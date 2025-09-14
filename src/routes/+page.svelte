@@ -124,7 +124,12 @@
 			<!-- Footer Stats -->
 			<div class="mt-12 bg-slate-50 rounded-lg p-6 text-center">
 				<p class="text-slate-600 text-sm">
-					Generated at {new Date(digest.generated_at).toLocaleTimeString()} • 
+					{#if digest.cache_info?.cached}
+						📦 Served from cache ({digest.cache_info.cache_age_minutes}m old) • 
+						Generated at {new Date(digest.cache_info.generated_at).toLocaleTimeString()} • 
+					{:else}
+						🔥 Fresh digest • Generated at {new Date(digest.generated_at).toLocaleTimeString()} • 
+					{/if}
 					Analyzed {digest.stats.total_stories_fetched} trending stories • 
 					Powered by OpenAI API •
                     Built by Jack Dolby
