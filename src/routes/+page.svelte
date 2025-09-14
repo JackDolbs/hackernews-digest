@@ -1,16 +1,18 @@
 <!-- @ts-nocheck -->
 <script>
 	import { onMount } from 'svelte';
+	import { fade } from 'svelte/transition';
 	import Header from '$lib/components/Header.svelte';
 	import DigestOverview from '$lib/components/DigestOverview.svelte';
+	import DigestOverviewSkeleton from '$lib/components/DigestOverviewSkeleton.svelte';
 	import StoryGrid from '$lib/components/StoryGrid.svelte';
-	import LoadingState from '$lib/components/LoadingState.svelte';
+	import DigestCardSkeleton from '$lib/components/DigestCardSkeleton.svelte';
 	import ErrorState from '$lib/components/ErrorState.svelte';
 	import EmptyState from '$lib/components/EmptyState.svelte';
 	import Footer from '$lib/components/Footer.svelte';
 	
 	let digest = null;
-	let loading = false;
+	let loading = true; // Start with loading state
 	let error = null;
 	
 	async function loadDigest() {
@@ -46,19 +48,33 @@
 <!-- Main Content -->
 <main class="max-w-4xl mx-auto px-4 py-6">
 	{#if loading}
-		<LoadingState />
+		<!-- Loading Skeletons -->
+		<div in:fade={{ duration: 300 }} out:fade={{ duration: 500, delay: 300 }}>
+			<DigestOverviewSkeleton />
+			<div class="space-y-4">
+				{#each Array(3) as _, i}
+					<DigestCardSkeleton />
+				{/each}
+			</div>
+		</div>
 	{:else if error}
-		<ErrorState {error} on:retry={loadDigest} />
+		<div in:fade={{ duration: 300 }}>
+			<ErrorState {error} on:retry={loadDigest} />
+		</div>
 	{:else if digest}
-		<!-- Digest Overview -->
-		<DigestOverview {digest} />
+		<div in:fade={{ duration: 300 }}>
+			<!-- Digest Overview -->
+			<DigestOverview {digest} />
 
-		<!-- Story Cards -->
-		<StoryGrid summaries={digest.summaries} />
+			<!-- Story Cards -->
+			<StoryGrid summaries={digest.summaries} />
 
-		<!-- Footer Stats -->
-		<Footer {digest} />
+			<!-- Footer Stats -->
+			<Footer {digest} />
+		</div>
 	{:else}
-		<EmptyState on:refresh={loadDigest} />
+		<div in:fade={{ duration: 300 }}>
+			<EmptyState on:refresh={loadDigest} />
+		</div>
 	{/if}
 </main>

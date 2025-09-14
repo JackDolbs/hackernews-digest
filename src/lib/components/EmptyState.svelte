@@ -17,7 +17,7 @@
 	<p class="text-slate-600 mb-6">Click refresh to generate a fresh digest of trending tech stories.</p>
 	<button
 		on:click={handleRefresh}
-		class="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+		class="px-6 py-3 bg-indigo-700 text-white rounded-lg font-medium hover:bg-indigo-800 transition-colors"
 	>
 		Generate Digest
 	</button>
