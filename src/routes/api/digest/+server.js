@@ -10,7 +10,10 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 /** @type {import('./$types').RequestHandler} */
-export async function GET({ url }) {
+export async function GET({ url, locals }) {
+    if (!locals?.user) {
+        return json({ error: 'Unauthorized' }, { status: 401 });
+    }
 	try {
 		// Get query parameters
 		const storyLimit = parseInt(url.searchParams.get('limit') || '12');
@@ -51,7 +54,10 @@ export async function GET({ url }) {
 }
 
 /** @type {import('./$types').RequestHandler} */
-export async function POST({ request }) {
+export async function POST({ request, locals }) {
+    if (!locals?.user) {
+        return json({ error: 'Unauthorized' }, { status: 401 });
+    }
 	try {
 		const { storyLimit = 12, hoursBack = 24 } = await request.json();
 		
